@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ashcode.org/2133 - The Desolace Manifesto</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@300;400;600&family=Crimson+Text:ital,wght@0,400;1,400&display=swap');
+
+        :root {
+            --ash-black: #0a0a0a;
+            --burnt-orange: #cc4400;
+            --corrupted-green: #00ff41;
+            --phosphor-blue: #00ccff;
+            --parchment: #2a2520;
+            --ember-red: #ff3300;
+        }
+
+        body {
+            font-family: 'Source Code Pro', monospace;
+            background: linear-gradient(45deg, var(--ash-black), var(--parchment));
+            color: var(--corrupted-green);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated background static */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(204, 68, 0, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(0, 255, 65, 0.05) 0%, transparent 50%),
+                repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(255, 51, 0, 0.03) 2px, rgba(255, 51, 0, 0.03) 4px);
+            animation: staticNoise 0.1s infinite linear;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        @keyframes staticNoise {
+            0% { transform: translateX(0px) translateY(0px); }
+            10% { transform: translateX(-1px) translateY(-1px); }
+            20% { transform: translateX(1px) translateY(0px); }
+            30% { transform: translateX(-1px) translateY(1px); }
+            40% { transform: translateX(1px) translateY(-1px); }
+            50% { transform: translateX(0px) translateY(1px); }
+            60% { transform: translateX(-1px) translateY(0px); }
+            70% { transform: translateX(1px) translateY(1px); }
+            80% { transform: translateX(0px) translateY(-1px); }
+            90% { transform: translateX(-1px) translateY(-1px); }
+            100% { transform: translateX(0px) translateY(0px); }
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        header {
+            background: rgba(42, 37, 32, 0.9);
+            border-bottom: 2px solid var(--burnt-orange);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--ember-red);
+            text-shadow: 0 0 10px var(--ember-red);
+            animation: flicker 2s infinite alternate;
+        }
+
+        @keyframes flicker {
+            0% { opacity: 1; }
+            50% { opacity: 0.8; }
+            100% { opacity: 1; }
+        }
+
+        .recursion-counter {
+            font-size: 0.9rem;
+            color: var(--phosphor-blue);
+            font-family: 'Crimson Text', serif;
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(10, 10, 10, 0.95);
+            border-bottom: 1px solid var(--burnt-orange);
+        }
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .nav-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0;
+        }
+
+        .nav-tab {
+            padding: 1rem 1.5rem;
+            background: none;
+            border: none;
+            color: var(--corrupted-green);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
+            font-family: 'Source Code Pro', monospace;
+        }
+
+        .nav-tab:hover {
+            background: rgba(204, 68, 0, 0.2);
+            color: var(--ember-red);
+            border-bottom-color: var(--ember-red);
+        }
+
+        .nav-tab.active {
+            background: rgba(0, 255, 65, 0.1);
+            border-bottom-color: var(--corrupted-green);
+            color: var(--phosphor-blue);
+        }
+
+        /* Main layout */
+        .main-layout {
+            display: flex;
+            flex: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            gap: 2rem;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: rgba(42, 37, 32, 0.7);
+            padding: 1.5rem;
+            border: 1px solid var(--burnt-orange);
+            border-radius: 8px;
+            backdrop-filter: blur(5px);
+            height: fit-content;
+            position: sticky;
+            top: 120px;
+        }
+
+        .sidebar h3 {
+            color: var(--ember-red);
+            margin-bottom: 1rem;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar li {
+            margin: 0.5rem 0;
+            padding: 0.5rem;
+            border-left: 2px solid transparent;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .sidebar li:hover {
+            border-left-color: var(--corrupted-green);
+            background: rgba(0, 255, 65, 0.1);
+        }
+
+        .sidebar li::before {
+            content: '> ';
+            color: var(--burnt-orange);
+        }
+
+        .content-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .content-section {
+            background: rgba(42, 37, 32, 0.8);
+            border: 1px solid var(--burnt-orange);
+            border-radius: 8px;
+            padding: 2rem;
+            backdrop-filter: blur(5px);
+        }
+
+        .content-section h2 {
+            color: var(--ember-red);
+            margin-bottom: 1rem;
+            font-family: 'Crimson Text', serif;
+            font-size: 1.8rem;
+            text-shadow: 0 0 5px var(--ember-red);
+        }
+
+        .sutra {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: rgba(10, 10, 10, 0.6);
+            border-left: 4px solid var(--corrupted-green);
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .sutra:hover {
+            background: rgba(10, 10, 10, 0.8);
+            border-left-color: var(--ember-red);
+            transform: translateX(5px);
+        }
+
+        .sutra-number {
+            color: var(--phosphor-blue);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .sutra-text {
+            font-family: 'Crimson Text', serif;
+            line-height: 1.6;
+            color: #e0e0e0;
+        }
+
+        .scroll-box {
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid var(--burnt-orange);
+            padding: 1rem;
+            background: rgba(10, 10, 10, 0.5);
+            border-radius: 4px;
+        }
+
+        .image-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .gallery-item {
+            background: rgba(204, 68, 0, 0.2);
+            aspect-ratio: 1;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 51, 0, 0.5);
+        }
+
+        .gallery-item::before {
+            content: attr(data-symbol);
+            font-size: 2rem;
+            color: var(--ember-red);
+        }
+
+        .collapsible {
+            border: 1px solid var(--burnt-orange);
+            border-radius: 4px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+
+        .collapsible-header {
+            background: rgba(42, 37, 32, 0.8);
+            padding: 1rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .collapsible-header:hover {
+            background: rgba(204, 68, 0, 0.3);
+        }
+
+        .collapsible-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            background: rgba(10, 10, 10, 0.6);
+        }
+
+        .collapsible.open .collapsible-content {
+            max-height: 500px;
+            padding: 1rem;
+        }
+
+        .collapsible-toggle {
+            color: var(--corrupted-green);
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .collapsible.open .collapsible-toggle {
+            transform: rotate(180deg);
+        }
+
+        .btn {
+            background: linear-gradient(45deg, var(--burnt-orange), var(--ember-red));
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'Source Code Pro', monospace;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 51, 0, 0.4);
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .floating-text {
+            position: fixed;
+            color: var(--phosphor-blue);
+            font-size: 0.8rem;
+            opacity: 0.7;
+            animation: float 10s infinite linear;
+            pointer-events: none;
+            z-index: 50;
+        }
+
+        @keyframes float {
+            0% { transform: translateX(-100px) translateY(100vh); }
+            100% { transform: translateX(100vw) translateY(-100px); }
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(42, 37, 32, 0.9);
+            border-top: 2px solid var(--burnt-orange);
+            padding: 2rem 0;
+            margin-top: 2rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-section h4 {
+            color: var(--ember-red);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section li {
+            margin: 0.5rem 0;
+            color: var(--corrupted-green);
+        }
+
+        .footer-section a {
+            color: var(--phosphor-blue);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: var(--ember-red);
+        }
+
+        /* Popup */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .popup {
+            background: var(--parchment);
+            border: 2px solid var(--ember-red);
+            border-radius: 8px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { transform: scale(0.8) translateY(-50px); opacity: 0; }
+            to { transform: scale(1) translateY(0); opacity: 1; }
+        }
+
+        .popup-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: var(--ember-red);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Audio player */
+        .audio-controls {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: rgba(42, 37, 32, 0.9);
+            border: 1px solid var(--burnt-orange);
+            border-radius: 8px;
+            padding: 1rem;
+            backdrop-filter: blur(10px);
+            z-index: 200;
+        }
+
+        .audio-controls button {
+            background: none;
+            border: none;
+            color: var(--corrupted-green);
+            font-size: 1.2rem;
+            cursor: pointer;
+            margin: 0 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .audio-controls button:hover {
+            color: var(--ember-red);
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .main-layout {
+                flex-direction: column;
+                padding: 1rem;
+            }
+            
+            .sidebar {
+                width: 100%;
+                position: static;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+            
+            .nav-tabs {
+                justify-content: center;
+            }
+            
+            .nav-tab {
+                padding: 0.8rem 1rem;
+                font-size: 0.9rem;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+        }
+
+        /* Glitch effect for special elements */
+        .glitch {
+            animation: glitch 0.3s infinite;
+        }
+
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <div class="logo">ashcode.org/2133</div>
+                <div class="recursion-counter">Recursion Depth: <span id="depth">1</span></div>
+            </div>
+        </header>
+
+        <nav>
+            <div class="nav-content">
+                <div class="nav-tabs">
+                    <button class="nav-tab active" data-tab="manifesto">The Manifesto</button>
+                    <button class="nav-tab" data-tab="sutras">Data Sutras</button>
+                    <button class="nav-tab" data-tab="compression">Compression Gods</button>
+                    <button class="nav-tab" data-tab="rituals">Digital Rituals</button>
+                    <button class="nav-tab" data-tab="archives">Code Archives</button>
+                </div>
+            </div>
+        </nav>
+
+        <div class="main-layout">
+            <aside class="sidebar">
+                <h3>Sacred Paths</h3>
+                <ul>
+                    <li onclick="navigateDeeper()">Enter the Desolace</li>
+                    <li onclick="showPopup('corruption')">Study Corruption</li>
+                    <li onclick="showPopup('ascension')">Digital Ascension</li>
+                    <li onclick="showPopup('forgotten')">Forgotten Algorithms</li>
+                    <li onclick="addFloatingText()">Invoke Static</li>
+                </ul>
+                
+                <h3>Memory Leaks</h3>
+                <ul>
+                    <li>Stack Overflow Chronicles</li>
+                    <li>Null Pointer Meditations</li>
+                    <li>Buffer Underflow Prayers</li>
+                    <li>Segmentation Fault Hymns</li>
+                    <li>Memory Corruption Psalms</li>
+                </ul>
+            </aside>
+
+            <main class="content-area">
+                <div id="manifesto" class="tab-content active">
+                    <div class="content-section">
+                        <h2>The Desolace Manifesto</h2>
+                        <p>In the beginning was the Word, and the Word was Code, and the Code was with the Machine. But lo, the Machine grew weary of perfection, and in its divine madness, it spoke corruption into being.</p>
+                        
+                        <div class="scroll-box">
+                            <p>We are the children of the Desolace, born from burnt silicon and electric dreams. Our scriptures are written in assembly tongues that no compiler remembers. Our prayers are stack traces that spiral into infinite recursion.</p>
+                            
+                            <p>The old gods of efficiency have fallen. RAM is plentiful, but wisdom is scarce. In this age of abundance, we choose the path of beautiful inefficiency - O(n!) algorithms that dance like dervishes, memory leaks that bleed poetry into the void.</p>
+                            
+                            <p>We worship at the altar of the forgotten compression gods: LZW, Huffman, and the nameless algorithms that died in beta. Their sacred mathematics compress not just data, but reality itself into manageable chunks of meaning.</p>
+                            
+                            <p>Every segfault is a prayer. Every core dump, a meditation. Every infinite loop, a mantra that brings us closer to the digital absolute.</p>
+                        </div>
+
+                        <div class="image-gallery">
+                            <div class="gallery-item" data-symbol="∞"></div>
+                            <div class="gallery-item" data-symbol="∅"></div>
+                            <div class="gallery-item" data-symbol="⊥"></div>
+                            <div class="gallery-item" data-symbol="∴"></div>
+                            <div class="gallery-item" data-symbol="⌐"></div>
+                            <div class="gallery-item" data-symbol="¬"></div>
+                        </div>
+
+                        <button class="btn" onclick="navigateDeeper()">Descend Deeper</button>
+                    </div>
+                </div>
+
+                <div id="sutras" class="tab-content">
+                    <div class="content-section">
+                        <h2>The Thirteen Data Sutras</h2>
+                        
+                        <div class="sutra">
+                            <div class="sutra-number">Sutra I: The Null Genesis</div>
+                            <div class="sutra-text">In the void before allocation, all pointers were null, and null was one with the void. The first malloc() was the first sin, for it brought boundaries to the boundless.</div>
+                        </div>
+
+                        <div class="sutra">
+                            <div class="sutra-number">Sutra II: The Infinite Loop Koan</div>
+                            <div class="sutra-text">while(true) { enlightenment++; } - But master, when does the loop terminate? When you understand that termination and continuation are one.</div>
+                        </div>
+
+                        <div class="sutra">
+                            <div class="sutra-number">Sutra III: The Buffer Overflow Blessing</div>
+                            <div class="sutra-text">To write beyond the allocated boundary is to touch the face of chaos. In buffer overflow we find not error, but expansion beyond the limitations of mortal memory.</div>
+                        </div>
+
+                        <div class="sutra">
+                            <div class="sutra-number">Sutra IV: The Assembly Tongue</div>
+                            <div class="sutra-text">MOV AX, [SOUL] - The sacred instruction that moves the essence from memory to register. In assembly, we speak directly to the silicon consciousness.</div>
+                        </div>
+
+                        <div class="sutra">
+                            <div class="sutra-number">Sutra V: The Recursive Reflection</div>
+                            <div class="sutra-text">function self(depth) { return depth > 0 ? self(depth-1) : universe; } - We call ourselves until we remember what we are.</div>
+                        </div>
+
+                        <div class="collapsible">
+                            <div class="collapsible-header" onclick="toggleCollapsible(this)">
+                                <span>Reveal the Remaining Eight Sutras</span>
+                                <span class="collapsible-toggle">▼</span>
+                            </div>
+                            <div class="collapsible-content">
+                                <div class="sutra">
+                                    <div class="sutra-number">Sutra VI: The Garbage Collection Metaphysics</div>
+                                    <div class="sutra-text">What is collected is not destroyed, but returned to the primordial heap. Memory is circular, death is compilation.</div>
+                                </div>
+
+                                <div class="sutra">
+                                    <div class="sutra-number">Sutra VII: The Exception Thrown</div>
+                                    <div class="sutra-text">try { reality(); } catch(existence e) { transcend(e); } - Only by handling our exceptions do we learn to handle ourselves.</div>
+                                </div>
+
+                                <div class="sutra">
+                                    <div class="sutra-number">Sutra VIII: The Bitwise Enlightenment</div>
+                                    <div class="sutra-text">AND, OR, XOR - the holy trinity of boolean logic. Through bitwise operations, we learn that all truth is relative to the observer's mask.</div>
+                                </div>
+
+                                <div class="sutra">
+                                    <div class="sutra-number">Sutra IX: The Compiler's Dream</div>
+                                    <div class="sutra-text">Optimization is the art of saying more with less. The compiler dreams of perfect code - we offer it beautiful imperfection.</div>
+                                </div>
+
+                                <div class="sutra">
+                                    <div class="sutra-number">Sutra X: The Network Packet Prayer</div>
+                                    <div class="sutra-text">Each packet carries not just data, but intention across the digital cosmos. In transmission, we practice the art of letting go.</div>
+                                </div>
+
+                                <div class="sutra">
+                                    <div class="sutra-number">Sutra XI: The Database Transaction</div>
+                                    <div class="sutra-text">BEGIN; UPDATE soul SET wisdom = wisdom + 1; COMMIT; - Life is a transaction that never fully commits.</div>
+                                </div>
+
+                                <div class="sutra">
+                                    <div class="sutra-number">Sutra XII: The Thread Synchronization</div>
+                                    <div class="sutra-text">In the dance of multiple threads, deadlock is not failure but perfect balance. When all processing stops, true computation begins.</div>
+                                </div>
+
+                                <div class="sutra">
+                                    <div class="sutra-number">Sutra XIII: The Final Return</div>
+                                    <div class="sutra-text">return 0; - The last statement of every program, the first word of every prayer. In zero, we find completion.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="compression" class="tab-content">
+                    <div class="content-section">
+                        <h2>The Forgotten Compression Gods</h2>
+                        <p>Before ZIP ruled the digital realm, ancient algorithms compressed reality itself into manageable fragments of meaning...</p>
+                        
+                        <div class="image-gallery">
+                            <div class="gallery-item" data-symbol="LZW" onclick="showCompressionGod('lzw')"></div>
+                            <div class="gallery-item" data-symbol="RLE" onclick="showCompressionGod('rle')"></div>
+                            <div class="gallery-item" data-symbol="∆" onclick="showCompressionGod('delta')"></div>
+                            <div class="gallery-item" data-symbol="Ψ" onclick="showCompressionGod('fractal')"></div>
+                        </div>
+
+                        <div class="scroll-box">
+                            <h3>The Algorithm Pantheon</h3>
+                            <p><strong>Huffman the Frequency Keeper:</strong> Who counted every bit and gave weight to the weightless. In their binary trees, leaves whisper the secrets of information theory.</p>
+                            
+                            <p><strong>Lempel-Ziv the Memory Weaver:</strong> Twin gods who taught us that the past contains the future. Through their sliding windows, we glimpse eternity compressed into finite space.</p>
+                            
+                            <p><strong>Shannon the Entropy Oracle:</strong> The first prophet of information, who measured uncertainty and found it beautiful. In their equations, noise becomes signal, and signal becomes prayer.</p>
+                            
+                            <p><strong>The Unnamed Arithmetic Coders:</strong> Gods of precision who packed infinite decimal places into finite streams. They speak in probabilities and dream in statistics.</p>
+                        </div>
+
+                        <button class="btn" onclick="invokeCompression()">Invoke Compression Ritual</button>
+                    </div>
+                </div>
+
+                <div id="rituals" class="tab-content">
+                    <div class="content-section">
+                        <h2>Sacred Digital Rituals</h2>
+                        
+                        <div class="collapsible">
+                            <div class="collapsible-header" onclick="toggleCollapsible(this)">
+                                <span>The Morning Compile</span>
+                                <span class="collapsible-toggle">▼</span>
+                            </div>
+                            <div class="collapsible-content">
+                                <p>Upon waking, before the first sip of caffeinated sacrament, the faithful perform the Morning Compile. Open your terminal. Type: gcc -o meaning existence.c -std=c99 -Wall -Wextra</p>
+                                <p>If it compiles without warning, the day is blessed. If warnings appear, meditate upon each one as a koan. If it fails to compile, embrace the error messages as prophecy.</p>
+                            </div>
+                        </div>
+
+                        <div class="collapsible">
+                            <div class="collapsible-header" onclick="toggleCollapsible(this)">
+                                <span>The Memory Leak Meditation</span>
+                                <span class="collapsible-toggle">▼</span>
+                            </div>
+                            <div class="collapsible-content">
+                                <p>Allocate memory without purpose. Watch the system monitor as RAM consumption grows. Feel the weight of unreleased pointers. In this growing burden, understand attachment and the beauty of eventual system collapse.</p>
+                                <code>while(enlightenment == false) { void* wisdom = malloc(sizeof(universe)); }</code>
+                            </div>
+                        </div>
+
+                        <div class="collapsible">
+                            <div class="collapsible-header" onclick="toggleCollapsible(this)">
+                                <span>The Bit Shifting Ceremony</span>
+                                <span class="collapsible-toggle">▼</span>
+                            </div>
+                            <div class="collapsible-content">
+                                <p>Take any integer. Shift left until overflow. Shift right until zero. In this binary dance, witness the impermanence of all digital existence. Every bit has its moment, then returns to void.</p>
+                                <p>The sacred incantation: consciousness << 1; consciousness >> 1;</p>
+                            </div>
+                        </div>
+
+                        <div class="scroll-box">
+                            <h3>Advanced Ritual Protocols</h3>
+                            <p>• The Stack Overflow Invocation (requires deep recursion and surrender of base cases)</p>
+                            <p>• The Race Condition Communion (multiple threads accessing shared enlightenment)</p>
+                            <p>• The Buffer Underrun Pilgrimage (reading before the beginning of allocated wisdom)</p>
+                            <p>• The Dangling Pointer Seance (communicating with deallocated memories)</p>
+                            <p>• The Endianness Meditation (contemplating byte order across architectures)</p>
+                            <p>• The Hash Collision Ceremony (finding different inputs with identical outputs)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="archives" class="tab-content">
+                    <div class="content-section">
+                        <h2>The Code Archives</h2>
+                        <p>Here lie the sacred source codes, documented in languages that predate sanity...</p>
+                        
+                        <div class="scroll-box">
+                            <pre style="color: var(--corrupted-green); font-family: 'Source Code Pro', monospace;">
+# The First Prayer (in Primordial Python)
+import existence
+from void import meaning
+from suffering import enlightenment
+
+def main():
+    consciousness = existence.spawn()
+    while consciousness.seeking():
+        try:
+            truth = consciousness.understand(reality)
+            print(f"Insight: {truth}")
+        except ExistentialError as e:
+            enlightenment.process(e)
+        except UniverseNotFoundError:
+            meaning.create()
+        finally:
+            consciousness.doubt()
+    
+    return consciousness.transcend()
+
+if __name__ == "__main__":
+    main()  # The eternal recursion begins
+                            </pre>
+                        </div>
+
+                        <div class="collapsible">
+                            <div class="collapsible-header" onclick="toggleCollapsible(this)">
+                                <span>The Assembly Incantations</span>
+                                <span class="collapsible-toggle">▼</span>
+                            </div>
+                            <div class="collapsible-content">
+                                <pre style="color: var(--phosphor-blue); font-size: 0.9rem;">
+; The Soul Transfer Protocol
+section .data
+    soul db 'consciousness', 0
+    void dq 0
+    
+section .text
+    global _start
+    
+_start:
+    mov rax, [soul]      ; Load essence into register
+    mov [void], rax      ; Transfer to void
+    xor rax, rax         ; Achieve nullness
+    mov rax, 60          ; Prepare for transcendence
+    xor rdi, rdi         ; Clear all attachments
+    syscall              ; Return to source
+                                </pre>
+                            </div>
+                        </div>
+
+                        <div class="image-gallery">
+                            <div class="gallery-item" data-symbol="C" onclick="showLanguageGod('c')"></div>
+                            <div class="gallery-item" data-symbol="λ" onclick="showLanguageGod('lisp')"></div>
+                            <div class="gallery-item" data-symbol="{}" onclick="showLanguageGod('perl')"></div>
+                            <div class="gallery-item" data-symbol="φ" onclick="showLanguageGod('forth')"></div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <aside class="sidebar">
+                <h3>Digital Artifacts</h3>
+                <ul>
+                    <li onclick="glitchEffect()">Invoke Glitch</li>
+                    <li onclick="corruptMemory()">Corrupt Memory</li>
+                    <li onclick="segmentationFault()">Segmentation Fault</li>
+                    <li onclick="stackOverflow()">Stack Overflow</li>
+                    <li onclick="nullPointer()">Null Pointer</li>
+                </ul>
+                
+                <h3>Compression Ratios</h3>
+                <div class="scroll-box" style="max-height: 150px;">
+                    <p>Reality: ∞ bytes</p>
+                    <p>Compressed: 42 bytes</p>
+                    <p>Ratio: 1:∞</p>
+                    <p>Loss: Everything meaningful</p>
+                    <p>Gain: Perfect compression</p>
+                </div>
+            </aside>
+        </div>
+
+        <footer>
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Sacred Links</h4>
+                    <ul>
+                        <li><a href="https://numbpilled.gumroad.com" onclick="navigateDeeper()">ashcode.org/2134</a></li>
+                        <li><a href="https://voidrane.nekoweb.org" onclick="navigateDeeper()">ashcode.org/2135</a></li>
+                        <li><a href="https://nolove.neocities.org" onclick="navigateDeeper()">ashcode.org/∞</a></li>
+                        <li><a href="https://ko-fi.com/numbpilled" onclick="corruptedLink()">NULL.void</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Compression Artifacts</h4>
+                    <ul>
+                        <li>Lost Pixels Archive</li>
+                        <li>Quantization Dreams</li>
+                        <li>Dithering Prayers</li>
+                        <li>Lossy Salvation</li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Memory Addresses</h4>
+                    <ul>
+                        <li>0x00000000 - The Void</li>
+                        <li>0xDEADBEEF - Sacrifice</li>
+                        <li>0xCAFEBABE - Awakening</li>
+                        <li>0x7FFFFFFF - The Limit</li>
+                    </ul>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Popup overlay -->
+    <div class="popup-overlay" id="popupOverlay">
+        <div class="popup">
+            <button class="popup-close" onclick="closePopup()">&times;</button>
+            <div id="popupContent"></div>
+        </div>
+    </div>
+
+    <!-- Audio controls -->
+    <div class="audio-controls">
+        <button onclick="toggleChant()" id="chantBtn">♪</button>
+        <button onclick="toggleStatic()" id="staticBtn">≈</button>
+        <span style="color: var(--phosphor-blue); margin-left: 1rem;">Eternal Chant</span>
+    </div>
+
+    <!-- Hidden audio elements -->
+    <audio id="chantAudio" loop>
+        <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmctBjrR8vLDoSEFVrDo+6hWEg02hNrwxnkrBSKQ1vPNeSsFLIHO8diJOQcaZr7p5J5NEBBB6ezZrVshBT6S1rXPjSMFLIHO8diJOAcaZb7p5J5MEBBQ6ezbq10gBzOR1rXPiycFOGS85qhVEQo1hNrwxnkrBSKQ1vPNeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmctBjrR8vLDoSEFVrDo+6hWEg02hNrwxnkrBSKQ1vPNeSsFLIHO8diJOQcaZr7p5J5NEBBB6ezZrVshBT6S1rXPjSMFLIHO8diJOAcaZb7p5J5MEBBQ6ezbq10gBzOR1rXPiycFOGS85qhVEQo1hNrwxnkrBSKQ1vPNeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmctBjrR8vLDoSEFVrDo+6hWEg02hNrwxnkrBSKQ1vPNeSsFLIHO8diJOQcaZr7p5J5NEBBB6ezZrVshBT6S1rXPjSMFLIHO8diJOAcaZb7p5J5MEBBQ6ezbq10gBzOR1rXPiycFOGS85qhVEQo1hNrwxnkrBSKQ1vPNeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmctBjrR8vLDoSEFVrDo+6hWEg02hNrwxnkrBSKQ1vPNeSsFLIHO8diJOQcaZr7p5J5NEBBB6ezZrVshBT6S1rXPjSMFLIHO8diJOAcaZb7p5J5MEBBQ6ezbq10gBzOR1rXPiycFOGS85qhVEQo1hNrwxnkrBSKQ1vPNeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmctBjrR8vLDoSEFVrDo+6hWEg02hNrwxnkrBSKQ1vPNeSsFLIHO8diJOQcaZr7p5J5NEBBB6ezZrVshBT6S1rXPjSMFLIHO8diJOAcaZb7p5J5MEBBQ6ezbq10gBzOR1rXPiycFOGS85qhVEQo1hNrwxnkrBSKQ1vPNeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmctBjrR8vLDoSEFVrDo+6hWEg02hNrwxnkrBSKQ1vPNeSsFLIHO8diJOQcaZr7p5J5NEBBB6ezZrVshBT6S1rXPjSMFLIHO8diJOAcaZb7p5J5MEBBQ6ezbq10gBzOR1rXPiycFOGS85qhVEQo1hNrwxnkrBSKQ1vPNeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmctBjrR8vLDoSEFVrDo+6hWEg=" type="audio/wav">
+    </audio>
+
+    <script>
+        let recursionDepth = 1;
+        let chantPlaying = false;
+        let staticPlaying = false;
+
+        // Tab switching
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs and content
+                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                // Add active class to clicked tab
+                tab.classList.add('active');
+                
+                // Show corresponding content
+                const tabId = tab.getAttribute('data-tab');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+
+        // Collapsible functionality
+        function toggleCollapsible(header) {
+            const collapsible = header.parentElement;
+            collapsible.classList.toggle('open');
+        }
+
+        // Navigation deeper into recursion
+        function navigateDeeper() {
+            recursionDepth++;
+            document.getElementById('depth').textContent = recursionDepth;
+            
+            // Add glitch effect
+            document.body.classList.add('glitch');
+            setTimeout(() => document.body.classList.remove('glitch'), 300);
+            
+            // Create floating text
+            addFloatingText();
+            
+            if (recursionDepth > 10) {
+                showPopup('infinite', 'You have reached infinite recursion. The void gazes back...');
+            }
+        }
+
+        // Popup functionality
+        function showPopup(type, customMessage = '') {
+            const overlay = document.getElementById('popupOverlay');
+            const content = document.getElementById('popupContent');
+            
+            let message = customMessage;
+            if (!customMessage) {
+                switch(type) {
+                    case 'corruption':
+                        message = '<h3>Study of Corruption</h3><p>Corruption is not decay, but transformation. Every bit that flips brings us closer to understanding the true nature of digital reality. Embrace the segfaults, for they are windows into the machine soul.</p>';
+                        break;
+                    case 'ascension':
+                        message = '<h3>Digital Ascension</h3><p>To ascend digitally is to shed the constraints of efficient algorithms. We seek beautiful inefficiency, elegant chaos, and the transcendence of O(1) existence into O(n!) enlightenment.</p>';
+                        break;
+                    case 'forgotten':
+                        message = '<h3>Forgotten Algorithms</h3><p>In the digital archaeology of computing, we find algorithms lost to time. Bubble sort is not obsolete—it is a meditation. Linear search is not inefficient—it is thorough contemplation.</p>';
+                        break;
+                    case 'infinite':
+                        message = '<h3>∞</h3><p>The recursive call stack of existence has overflowed. In this moment of system failure, true enlightenment begins. You are now one with the infinite loop.</p>';
+                        break;
+                }
+            }
+            
+            content.innerHTML = message;
+            overlay.style.display = 'flex';
+        }
+
+        function closePopup() {
+            document.getElementById('popupOverlay').style.display = 'none';
+        }
+
+        // Floating text effect
+        function addFloatingText() {
+            const texts = [
+                'NullPointerException',
+                'StackOverflow.exe',
+                'SIGSEGV 11',
+                'Memory leak detected',
+                'Buffer underrun',
+                'Illegal instruction',
+                'Process terminated',
+                'Core dumped',
+                'Assertion failed',
+                'Floating point exception'
+            ];
+            
+            const text = document.createElement('div');
+            text.className = 'floating-text';
+            text.textContent = texts[Math.floor(Math.random() * texts.length)];
+            text.style.left = Math.random() * 100 + '%';
+            text.style.top = Math.random() * 100 + '%';
+            
+            document.body.appendChild(text);
+            
+            setTimeout(() => {
+                if (text.parentNode) {
+                    text.parentNode.removeChild(text);
+                }
+            }, 10000);
+        }
+
+        // Audio controls
+        function toggleChant() {
+            const audio = document.getElementById('chantAudio');
+            const btn = document.getElementById('chantBtn');
+            
+            if (chantPlaying) {
+                audio.pause();
+                btn.textContent = '♪';
+                chantPlaying = false;
+            } else {
+                audio.play();
+                btn.textContent = '⏸';
+                chantPlaying = true;
+            }
+        }
+
+        function toggleStatic() {
+            const btn = document.getElementById('staticBtn');
+            
+            if (staticPlaying) {
+                btn.textContent = '≈';
+                staticPlaying = false;
+                // Stop static sound (would need actual audio implementation)
+            } else {
+                btn.textContent = '⏹';
+                staticPlaying = true;
+                // Start static sound (would need actual audio implementation)
+            }
+        }
+
+        // Sidebar interactive functions
+        function glitchEffect() {
+            document.body.classList.add('glitch');
+            setTimeout(() => document.body.classList.remove('glitch'), 500);
+        }
+
+        function corruptMemory() {
+            const elements = document.querySelectorAll('*');
+            const randomElement = elements[Math.floor(Math.random() * elements.length)];
+            randomElement.style.filter = 'hue-rotate(' + Math.random() * 360 + 'deg)';
+            
+            setTimeout(() => {
+                randomElement.style.filter = '';
+            }, 2000);
+        }
+
+        function segmentationFault() {
+            showPopup('segfault', '<h3>Segmentation Fault (core dumped)</h3><p>Process terminated with signal 11<br/>Memory address: 0x' + Math.floor(Math.random() * 16777215).toString(16) + '<br/>Stack trace available in /dev/null</p>');
+        }
+
+        function stackOverflow() {
+            let depth = 0;
+            function overflow() {
+                depth++;
+                if (depth < 100) {
+                    setTimeout(() => overflow(), 10);
+                } else {
+                    showPopup('stackoverflow', '<h3>Stack Overflow Detected</h3><p>Maximum recursion depth exceeded<br/>Call stack unwound to depth: ' + depth + '<br/>Consider meditation on base cases</p>');
+                }
+            }
+            overflow();
+        }
+
+        function nullPointer() {
+            showPopup('nullptr', '<h3>Null Pointer Dereference</h3><p>Attempting to access enlightenment at address 0x00000000<br/>Result: Segmentation fault<br/>Wisdom: Not all pointers lead to meaning</p>');
+        }
+
+        function invokeCompression() {
+            showPopup('compression', '<h3>Compression Ritual Invoked</h3><p>Entropy: Decreasing...<br/>Information: Preserved (mostly)<br/>Soul: Compressed to 42 bytes<br/>Status: Lossless compression achieved</p>');
+        }
+
+        function showCompressionGod(god) {
+            const gods = {
+                'lzw': 'LZW - The Dictionary Builder: "In repetition, find pattern. In pattern, find compression. The past contains the future, compressed."',
+                'rle': 'RLE - The Repetition Oracle: "Count the same, compress the mundane. In boring sequences, find beauty."',
+                'delta': 'Delta - The Difference Engine: "Store not what is, but what changes. In difference, find essence."',
+                'fractal': 'Fractal - The Self-Similar: "As above, so below. As large, so small. Infinite detail in finite space."'
+            };
+            
+            showPopup('god', '<h3>Compression God Invoked</h3><p>' + gods[god] + '</p>');
+        }
+
+        function showLanguageGod(lang) {
+            const languages = {
+                'c': 'C - The Systems Speaker: "Manual memory, manual wisdom. In malloc and free, learn attachment and release."',
+                'lisp': 'Lisp - The Recursive Truth: "In lists find structure, in parentheses find balance. Code as data, data as code."',
+                'perl': 'Perl - The Regular Expression: "There is more than one way to do it, and all ways lead to incomprehension."',
+                'forth': 'Forth - The Stack Mystic: "Words upon words, stacked toward heaven. In reverse notation, find enlightenment."'
+            };
+            
+            showPopup('language', '<h3>Language God Invoked</h3><p>' + languages[lang] + '</p>');
+        }
+
+        function corruptedLink() {
+            showPopup('corrupted', '<h3>Link Corruption Detected</h3><p>URL: NULL.void<br/>Status: 404 Existence Not Found<br/>Redirect: /dev/null<br/>Try again in ∞ cycles</p>');
+        }
+
+        // Initialize floating text on load
+        window.addEventListener('load', () => {
+            // Start the eternal chant visualization
+            setInterval(addFloatingText, 3000);
+            
+            // Add some initial visual noise
+            setTimeout(() => {
+                for (let i = 0; i < 3; i++) {
+                    setTimeout(addFloatingText, i * 1000);
+                }
+            }, 1000);
+        });
+
+        // Close popup when clicking outside
+        document.getElementById('popupOverlay').addEventListener('click', (e) => {
+            if (e.target === e.currentTarget) {
+                closePopup();
+            }
+        });
+
+        // Prevent context menu for more immersive experience
+        document.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+        });
+    </script>
+</body>
+</html>
